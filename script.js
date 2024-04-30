@@ -1,23 +1,39 @@
-// script.js
+// Importe o módulo MongoDB
+const { MongoClient } = require('mongodb');
+
+// URL de conexão com o servidor MongoDB
+const uri = 'mongodb+srv://teste:1111@cluster0.lmhkta4.mongodb.net/';
+
+// Nome do banco de dados
+const dbName = 'blogDB';
 
 async function loginUser(username, password) {
+    const client = new MongoClient(uri);
+
     try {
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-        });
-        if (response.ok) {
+        // Conecte-se ao servidor MongoDB
+        await client.connect();
+
+        // Acesse o banco de dados
+        const db = client.db(dbName);
+
+        // Acesse a coleção de usuários
+        const usersCollection = db.collection('users');
+
+        // Pesquise o usuário pelo nome de usuário e senha
+        const user = await usersCollection.findOne({ username, password });
+
+        if (user) {
             alert('Login bem-sucedido!');
         } else {
-            const errorMessage = await response.text();
-            alert(`Erro ao fazer login: ${errorMessage}`);
+            alert('Usuário ou senha incorretos.');
         }
     } catch (error) {
         console.error('Erro ao fazer login:', error);
-        alert('Erro ao fazer login. Verifique sua conexão com a internet e tente novamente.');
+        alert('Erro ao fazer login. Verifique o console para mais detalhes.');
+    } finally {
+        // Feche a conexão com o cliente MongoDB
+        await client.close();
     }
 }
 
