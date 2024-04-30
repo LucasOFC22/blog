@@ -6,7 +6,7 @@ const User = require('./models/User');
 const app = express();
 
 // Conexão com o MongoDB
-mongoose.connect('mongodb+srv://username:password@cluster0.lmhkta4.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://teste:1111@cluster0.lmhkta4.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Conectado ao MongoDB'))
     .catch(err => console.error('Erro ao conectar ao MongoDB:', err));
 
